@@ -17,13 +17,18 @@ router.get('/', async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+/**
+ * Modify the “Create Note” Route: In your notes route file (routes/api/notes.js), find the POST / route. When a new note is created, you must associate it with the currently logged-in user. The authenticated user’s data should be available on req.user from the authentication middleware. Save the user’s _id to the new note’s user field.
+ */
  
 // POST /api/notes - Create a new note
 router.post('/', async (req, res) => {
   try {
     const note = await Note.create({
       ...req.body,
-      // The user ID needs to be added here
+      user: req.user._id,
+      // The user ID needs to be added here - done.
     });
     res.status(201).json(note);
   } catch (err) {
